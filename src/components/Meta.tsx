@@ -59,6 +59,26 @@ const Meta = (props: IMetaProps) => {
           site_name: AppConfig.site_name,
         }}
       />
+      {/* DIN reference */}
+      <link rel="stylesheet" href="https://use.typekit.net/lss0wwg.css" />
+
+      {/* GA */}
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=UA-840462-34"
+      />
+      {/* eslint-disable */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '[UA-840462-34]', { page_path: window.location.pathname });
+            `,
+        }}
+      />
+      {/* eslint-enable */}
     </>
   );
 };
