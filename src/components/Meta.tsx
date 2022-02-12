@@ -1,13 +1,15 @@
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-
-import { AppConfig } from '../utils/AppConfig';
+import Script from 'next/script';
 
 type IMetaProps = {
   title: string;
   description: string;
   canonical?: string;
+  siteName?: string;
+  twitterHandle?: string;
+  ogImage?: string;
 };
 
 const Meta = (props: IMetaProps) => {
@@ -17,35 +19,38 @@ const Meta = (props: IMetaProps) => {
     <>
       <Head>
         <meta charSet="UTF-8" key="charset" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
         <meta
           name="viewport"
           content="width=device-width,initial-scale=1"
           key="viewport"
         />
         <link
+          rel="preload"
+          href="https://use.typekit.net/ypy1yno.css"
+          as="style"
+        />
+        <link
           rel="apple-touch-icon"
-          href={`${router.basePath}/apple-touch-icon.png`}
-          key="apple"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href={`${router.basePath}/favicon-32x32.png`}
-          key="icon32"
+          href="/favicon-32x32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href={`${router.basePath}/favicon-16x16.png`}
-          key="icon16"
+          href="/favicon-16x16.png"
         />
-        <link
-          rel="icon"
-          href={`${router.basePath}/favicon.ico`}
-          key="favicon"
-        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="stylesheet" href="https://use.typekit.net/ypy1yno.css" />
       </Head>
       <NextSeo
         title={props.title}
@@ -55,29 +60,40 @@ const Meta = (props: IMetaProps) => {
           title: props.title,
           description: props.description,
           url: props.canonical,
-          locale: AppConfig.locale,
-          site_name: AppConfig.site_name,
+          locale: router.locale,
+          site_name: props.siteName,
+          images: [
+            {
+              url: String(props.ogImage),
+              width: 1200,
+              height: 628,
+              alt: '',
+            },
+          ],
+        }}
+        twitter={{
+          cardType: 'summary_large_image',
+          site: props.canonical,
+          handle: props.twitterHandle,
         }}
       />
-      {/* DIN reference */}
-      <link rel="stylesheet" href="https://use.typekit.net/lss0wwg.css" />
 
-      {/* GA */}
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=UA-840462-34"
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=UA-[#TODO]-2"
       />
-      {/* eslint-disable */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '[UA-840462-34]', { page_path: window.location.pathname });
-            `,
-        }}
-      />
+
+      <Script strategy="afterInteractive" id="ga-embed">
+        {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-[#TODO]', {
+        page_path: window.location.pathname,
+      });
+  `}
+      </Script>
       {/* eslint-enable */}
     </>
   );
