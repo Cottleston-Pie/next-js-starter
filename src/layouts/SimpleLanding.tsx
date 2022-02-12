@@ -10,6 +10,7 @@ const SimpleLanding = () => (
     <Meta title={AppConfig.title} description={AppConfig.description} />
     <Header />
     {/* CONTENT */}
+    <h1>Let's get building!</h1>
     <Footer />
   </div>
 );
